@@ -1,0 +1,43 @@
+CREATE DATABASE `chat`
+
+
+CREATE TABLE `usuario` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `nombre_usuario` varchar(200) NOT NULL,
+  `telefono` varchar(45) NOT NULL,
+  `created` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `modified` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `last_login` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ;
+
+
+CREATE TABLE `grupo` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `nombre_grupo` varchar(200) DEFAULT NULL,
+  `fecha_creacion` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+);
+
+CREATE TABLE `usuario_grupo` (
+  `id_usuario` int NOT NULL,
+  `id_grupo` int NOT NULL,
+  PRIMARY KEY (`id_usuario`,`id_grupo`),
+  KEY `fk_grupo_idx` (`id_grupo`),
+  CONSTRAINT `fk_grupo2` FOREIGN KEY (`id_grupo`) REFERENCES `grupo` (`id`),
+  CONSTRAINT `fk_usuario2` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id`)
+);
+
+CREATE TABLE `mensaje` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `texto` varchar(200) DEFAULT NULL,
+  `fecha_envio` datetime DEFAULT NULL,
+  `id_usuario` int DEFAULT NULL,
+  `id_grupo` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_usuario_idx` (`id_usuario`),
+  KEY `fk_grupo_idx` (`id_grupo`),
+  CONSTRAINT `fk_grupo` FOREIGN KEY (`id_grupo`) REFERENCES `grupo` (`id`),
+  CONSTRAINT `fk_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id`)
+);
+
